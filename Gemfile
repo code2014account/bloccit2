@@ -30,3 +30,6 @@ gem 'jquery-rails'
 
 # TRUBOLINKS = makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
+
+# Other Gems
+gem 'bootstrap-sass'
