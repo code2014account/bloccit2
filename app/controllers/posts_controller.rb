@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
 
+   before_action :require_sign_in, except: :show
 
   def show
     @post = Post.find(params[:id])
@@ -12,13 +13,11 @@ class PostsController < ApplicationController
 
   def create
 
-    @post = Post.new
-    @post.title = params[:post][:title]
-    @post.body = params[:post][:body]
+
     @topic = Topic.find(params[:topic_id])
 
-
-    @post.topic = @topic
+    @post = @topic.posts.build(post_params)
+    @post.user = current_user
 
     if @post.save
 
@@ -54,8 +53,7 @@ end
 
   def update
     @post = Post.find(params[:id])
-    @post.title = params[:post][:title]
-    @post.body = params[:post][:body]
+    @post.assign_attributes(post_params)
 
     if @post.save
       flash[:notice] = "Post was updated."
@@ -65,6 +63,12 @@ end
       render :edit
     end
   end
+# private
+private
+
+ def post_params
+   params.require(:post).permit(:title, :body)
+ end
 
   # the real end
 end
